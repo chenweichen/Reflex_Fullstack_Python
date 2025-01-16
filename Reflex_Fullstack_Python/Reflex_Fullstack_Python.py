@@ -15,13 +15,22 @@ from rxconfig import config
 class State(rx.State):
     """The app state."""
     label="This is my label."
-    original_label = "This is my label."
 
-    def change_label(self):
-        if self.label == "Cool label.":
-            self.label = self.original_label
-        else:
-            self.label = "Cool label."
+    text: str = "Click me to edit"
+    show_input: bool =False
+
+    def toggle_input(self):
+        self.show_input = not self.show_input
+
+    @rx.event
+    def handle_enter(self, value: str):
+        self.text = value
+        self.show_input = False
+
+    def handle_title_input_change(self, val):
+        self.label = val
+    
+    #def handle_heading_change(self, )
 
 
 def index() -> rx.Component:
@@ -29,14 +38,24 @@ def index() -> rx.Component:
     return rx.container(
         rx.color_mode.button(position="top-right"),
         rx.vstack(
-            rx.heading(State.label, " Welcome to Reflex!", size="9"),
+            rx.heading(State.label, size="9"), # My personal practice
             rx.text(
                 "Get started by editing ",
                 rx.code(f"{config.app_name}/{config.app_name}.py"),
-                on_click=State.change_label,
                 size="5",
             ),
-            #rx.button("Change label content.", on_click=State.change_label),
+            rx.input(on_change=State.handle_title_input_change), # Here on_change is trigger
+            rx.heading(
+                State.text,
+                on_click=State.toggle_input,
+            ),
+            rx.cond(
+                State.show_input,
+                rx.input(
+                    value=State.text,
+                    on_blur=State.handle_enter,
+                )
+            ),
             rx.link(
                 rx.button("Check out our docs!"),
                 href="https://reflex.dev/docs/getting-started/introduction/",
