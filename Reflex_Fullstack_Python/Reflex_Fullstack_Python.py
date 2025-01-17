@@ -50,7 +50,10 @@ class State(rx.State):
     @rx.event
     def handle_title_input_change(self, val):
         self.label = val
-
+    
+    @rx.event
+    def did_click(self):
+        print("Hello world did click")
     ################
 
     text: str = "Click me to edit"
@@ -69,6 +72,12 @@ class State(rx.State):
     
     #def handle_heading_change(self, )
 
+def base_page(*args) -> rx.Component:
+
+    return rx.container(
+
+    )
+
 
 def index() -> rx.Component:
     # Welcome Page (Index)
@@ -81,7 +90,12 @@ def index() -> rx.Component:
                 rx.code(f"{config.app_name}/{config.app_name}.py"),
                 size="5",
             ),
-            rx.input(on_change=State.handle_title_input_change), # Here on_change is trigger
+            # <input type='text' value='My value' />
+            rx.input(
+                value=State.label,
+                on_click=State.did_click,
+                on_change=State.handle_title_input_change,
+                ), # Here on_change is trigger
             
             ################
             rx.heading(
