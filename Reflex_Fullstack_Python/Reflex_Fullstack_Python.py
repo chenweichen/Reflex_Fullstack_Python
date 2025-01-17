@@ -10,10 +10,10 @@
 
 #NOTE - 
 # rx.input(
-        value=f"{cls.expected_quantity}",
-        on_change=cls.set_expected_quantity,
-        placeholder="請輸入預期數量",
-        type="number",
+#        value=f"{cls.expected_quantity}",
+#        on_change=cls.set_expected_quantity,
+#        placeholder="請輸入預期數量",
+#        type="number",
 # ), # rx.input
 
 
