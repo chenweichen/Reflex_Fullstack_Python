@@ -42,6 +42,8 @@ import reflex as rx
 
 from rxconfig import config
 
+from .ui.base import base_page
+
 
 class State(rx.State):
     """The app state."""
@@ -68,21 +70,27 @@ class State(rx.State):
         self.text = value
 
     ################
+
+    toggle_show: bool = True
+
+    @rx.event
+    def change_toggle_state(self):
+        self.toggle_show = not (self.toggle_show)
+
+    ################
     
     
     #def handle_heading_change(self, )
 
-def base_page(*args) -> rx.Component:
 
-    return rx.container(
 
-    )
+
+
 
 
 def index() -> rx.Component:
     # Welcome Page (Index)
-    return rx.container(
-        rx.color_mode.button(position="top-right"),
+    return base_page(
         rx.vstack(
             rx.heading(State.label, size="9"), # My personal practice
             rx.text(
@@ -111,6 +119,12 @@ def index() -> rx.Component:
                 )
             ),
             ################
+            rx.button("Toggle", on_click=State.change_toggle_state),
+            rx.cond(State.toggle_show,
+            rx.text(f"Text 1", color="green"),
+            rx.text(f"Text 2", color="yellow"),
+            ),
+            ################
 
             rx.link(
                 rx.button("Check out our docs!"),
@@ -121,7 +135,6 @@ def index() -> rx.Component:
             justify="center",
             min_height="85vh",
         ),
-        rx.logo(),
     )
 
 
