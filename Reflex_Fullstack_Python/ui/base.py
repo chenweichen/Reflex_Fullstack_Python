@@ -14,11 +14,14 @@ def base_page(child: rx.Component, hide_navbar=False, *args, **kwargs) -> rx.Com
             rx.logo(),
             rx.color_mode.button(position="bottom-left"),
         )
-    return rx.container(
+    return rx.fragment(
             navbar(),
-            child,
+            rx.box(
+                child,
+                id="my-base-child-el",
+            ),
             rx.logo(),
             rx.color_mode.button(position="bottom-left", id="my-light-mode-btn"),
-            padding="5em",
+            padding="10em",
             id="my-base-container",
     )
